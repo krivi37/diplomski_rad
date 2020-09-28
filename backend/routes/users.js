@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 
-//Register
+//Register. System admin connects to this point when creating new profiles.
 router.post('/register', (req, res, next) => {
     let newUser = new User ({
         name: req.body.name,
@@ -17,8 +17,7 @@ router.post('/register', (req, res, next) => {
         secretQ: req.body.secretQ,
         secretA: req.body.secretA,
         type: req.body.type,
-        request: true,
-        approved: false
+        department: req.body.department
       });
       
       User.getUserByUsername(newUser.username, (err, user) => {
@@ -60,8 +59,6 @@ router.post('/authenticate', (req, res, next) => {
 
       User.comparePassword(password, user.password, (error, isMatch) => {
         if(error) throw error;
-        if(user.request==false && user.approved ==false)return res.json({success: false, msg: 'Neautorizovan profil, kontaktirajte administratora'});
-        else if (user.request==true && user.approved ==false) return res.json({success: false, msg: 'Profil ceka odobrenje administratora'});
         if(isMatch){
           const token = jwt.sign({_id: user._id, type: user.type}, config.secret, {
             expiresIn: 3600
@@ -87,36 +84,7 @@ router.post('/authenticate', (req, res, next) => {
     });
 });
 
-router.get('/regreq', passport.authenticate('admin-rule' ,{session:false}), (req, res, next) => {
-  User.getRegistrationRequests((err, data) => {
-    if(err) res.json({success: false, msg: "error"});
-    else res.json(data);
-  });
-});
-
-router.post('/authorizeone', passport.authenticate('admin-rule' ,{session:false}),(req, res, next) => {
-    let username = req.body.username;
-    User.authorizeRequest(username, (err) => {
-      if(err) res.json({success: false, msg: "error"});
-      else res.json({msg: "success"});
-    })
-})
-
-router.post('/authorizeall', passport.authenticate('admin-rule' ,{session:false}),(req, res, next) => {
-  User.authorizeAll((err) => {
-    if(err) res.json({success: false, msg: "error"});
-    else res.json({msg: "success"});
-  })
-})
-
-router.post('/denyrequest', passport.authenticate('admin-rule' ,{session:false}),(req, res, next) => {
-  let username = req.body.username;
-  User.denyRequest(username, (err) => {
-    if(err) res.json({success: false, msg: "error"});
-    else res.json({msg: "success"});
-  })
-})
-
+// For resetting password
 router.post('/forgottenpassword', (req, res, next) => {
   let username = req.body.username;
   let email = req.body.email;
@@ -130,8 +98,9 @@ router.post('/forgottenpassword', (req, res, next) => {
     return res.json({success:true, msg: 'Tajno pitanje'});  
   }
 )
-})
+});
 
+// Secret question check
 router.post('/questioncheck', (req, res, next) => {
   let username = req.body.username;
   let answer = req.body.answer;
@@ -146,6 +115,7 @@ router.post('/questioncheck', (req, res, next) => {
 )
 })
 
+// For resetting/changing password
 router.post('/resetpassword', (req, res, next) => {
   let username = req.body.username;
   let newpass = req.body.newpass;
@@ -166,6 +136,7 @@ router.post('/getquestion', (req, res, next) => {
 )
 })
 
+// For changing password
 router.post('/checkpassword', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.oldpass;
@@ -173,21 +144,17 @@ router.post('/checkpassword', (req, res, next) => {
       if(err) throw err;
 
       if(!user){
-        return res.json({success: false, msg: 'User not found'});
+        return res.json({success: false, msg: 'Korisnik nije pronadjen'});
       }
 
       User.comparePassword(password, user.password, (error, isMatch) => {
-        if(err) throw err;
-        if(user.request==false && user.approved ==false)return res.json({success: false, msg: 'Neautorizovan profil, kontaktirajte administratora'});
-        else if (user.request==true && user.approved ==false) return res.json({success: false, msg: 'Profil ceka odobrenje administratora'});
+        if(error) throw error;
         if(isMatch){
-          
           res.json({
-            succes: true,
+            success: true,
             msg: "OK"
           });
         }
-
         else {
           return res.json({success: false, msg: 'Pogresna lozinka'});
         }

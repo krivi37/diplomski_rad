@@ -44,13 +44,8 @@ const UserSchema = mongoose.Schema ({
     required: true
   },
 
-  request: {
-      type: Boolean
-  },
-
-  approved: {
-      type: Boolean,
-      required: true
+  department: {
+    type: String
   }
 
 });
@@ -81,27 +76,6 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     if(err) throw err;
     callback(null, isMatch);
   });
-}
-
-module.exports.getRegistrationRequests = function(callback){
-    User.find({request: true}, {name: 1,
-      surname: 1,
-      username: 1,
-      email: 1,
-      type: 1, _id: 0 }, 
-      callback);
-}
-
-module.exports.authorizeRequest = function(username, callback){
-    User.updateOne({"username": username}, {"$set": {"request": false, "approved": true}}, callback);
-}
-
-module.exports.authorizeAll = function(callback){
-    User.updateMany({"request": true}, {"$set": {"request": false, "approved": true}}, callback);
-}
-
-module.exports.denyRequest = function(username, callback){
-    User.updateOne({"username": username}, {"$set": {"request": false, "approved": false}}, callback);
 }
 
 module.exports.updatePassword = function(username, newpassword, callback){
