@@ -21,14 +21,14 @@ router.post('/addnewdocument', (req, res, next) => {
         archived: false,
         version: 0
     });
-    Subject.getSubjectByTitle(newDocument.subject, (err, data) => {
+    Subject.getSubjects({title: newDocument.subject}, (err, data) => {
         // Check if the subject exists
         if(err) {
             res.json({success: false, msg: 'Failed'});
         }
 
         //If it exists, all is good
-        else if(data){
+        else if(data.length != 0){
             Doc.getDocumentByTitleAndSubjectName(newDocument.title, newDocument.subject, (err, data) => {
                 if(err) throw err;
                 else if(data){
@@ -74,96 +74,42 @@ router.post('/addnewdocument', (req, res, next) => {
 
 //Getters
 
-router.post('/getdocumentsbytitle', (req, res, next) => {
-    Doc.getDocumentsByTitle(req.body.title, (err, data) => {
+router.post('/getunarchiveddocuments', (req, res, next) => {
+    Doc.getDocuments(req.body, false, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
         }
         else {
-            res.json({success: true, subjects: data});
+            res.json({success: true, documents: data});
         }
     });
 });
 
-router.post('/getdocumentbytitle_subjectname', (req, res, next) => {
-    Doc.getDocumentByTitleAndSubjectName(req.body.title, req.body.subject_name, (err, data) => {
+router.post('/getarchiveddocuments', (req, res, next) => {
+    Doc.getDocuments(req.body, true, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
         }
         else {
-            res.json({success: true, subject: data});
+            res.json({success: true, documents: data});
         }
     });
 });
 
-router.post('/getdocumentsbytitle_with_archived', (req, res, next) => {
-    Doc.getAllDocumentsByTitleAndSubjectName(req.body.title, req.body.subject_name, (err, data) => {
+router.post('/getalldocuments', (req, res, next) => {
+    Doc.getAllDocuments(req.body, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
         }
         else {
-            res.json({success: true, subjects: data});
+            res.json({success: true, documents: data});
         }
     });
 });
 
-router.post('/getdocumentsbytags', (req, res, next) => {
-    Doc.getDocumentsByTags(req.body.tags, (err, data) => {
-        if(err) {
-            res.json({success: false, msg: "Failed"});
-        }
-        else {
-            res.json({success: true, subjects: data});
-        }
-    });
-});
-
-router.post('/getdocumentbytitle_subjectid', (req, res, next) => {
-    Doc.getDocumentByTitleAndSubjectName(req.body.title, req.body.subject_id, (err, data) => {
-        if(err) {
-            res.json({success: false, msg: "Failed"});
-        }
-        else {
-            res.json({success: true, subject: data});
-        }
-    });
-});
-
-router.post('/archivedocument', (req, res, next) => {
-    Doc.setArchivedDocument(req.body.title, req.body.subject, (err, data) => {
-        if(err) {
-            res.json({success: false, msg: "Failed"});
-        }
-        else {
-            res.json({success: true});
-        }
-    });
-});
-
-router.post('/updatedescription', (req, res, next) => {
-    Doc.updateDescription(req.body.title, req.body.subject, req.body.description, (err, data) => {
-        if(err) {
-            res.json({success: false, msg: "Failed"});
-        }
-        else {
-            res.json({success: true});
-        }
-    });
-});
- 
-router.post('/updatetags', (req, res, next) => {
-    Doc.updateTags(req.body.title, req.body.subject, req.body.tags, (err, data) => {
-        if(err) {
-            res.json({success: false, msg: "Failed"});
-        }
-        else {
-            res.json({success: true});
-        }
-    });
-});
-
-router.post('/updatetitle', (req, res, next) => {
-    Doc.updateTitle(req.body.title, req.body.subject, req.body.new_title, (err, data) => {
+// Setter
+router.post('/updatedocuments', (req, res, next) => {
+    Doc.updateDocuments(req.body.keys, req.body.params, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
         }

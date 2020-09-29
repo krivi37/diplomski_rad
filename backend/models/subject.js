@@ -60,145 +60,87 @@ const SubjectSchema = mongoose.Schema ({
 
 const Subject = module.exports = mongoose.model('subjects', SubjectSchema);
 
-module.exports.getSubjectById = function(id_number, callback){
-    const query = {id_number: id_number};
-    Subject.findOne(query, callback);
+// Universal get by any parameter
+module.exports.getSubjects = function(params, callback){
+    const query = {
+        id_number: params.id_number, 
+        title: params.title,
+        submission_date: params.submission_date,
+        description: params.description,
+        //keywords: params.keywords,
+        category: params.category,
+        submitter: params.submitter,
+        //employees: params.employees,
+        department: params.department,
+        //documents: params.documents
+    };
+
+    // Filtering undefined values from query
+    let conditions = Object.keys(query).reduce((result, key) => {
+        if(query[key]){
+            result[key] = query[key];
+        }
+        return result;
+    }, {});
+
+    if(params.documents != undefined) conditions.documents = {$all: params.documents};
+    if(params.employees != undefined) conditions.employees = {$all: params.employees};
+    if(params.keywords != undefined) conditions.keywords = {$all: params.keywords};
+
+    Subject.find(conditions, callback);
 }
 
-module.exports.getSubjectsByDate = function (date, callback){
-    const query = {submission_date: date};
-    Subject.find(query, callback);
-}
+// Universal update subject. It can update more than one subject if, for example the criteria is by keywords
 
-module.exports.getSubjectsByKeywords = function (keywords, callback){
-    const query = {keywords: {$all: keywords}};
-    Subject.find(query, callback);
-}
+module.exports.updateSubjects = function (keys, params, callback){
+    const query_conditions = {
+        id_number: keys.id_number, 
+        title: keys.title,
+        submission_date: keys.submission_date,
+        description: keys.description,
+        category: keys.category,
+        submitter: keys.submitter,
+        department: keys.department,
+    };
 
-module.exports.getSubjectByTitle = function (title, callback){
-    const query = {title: title};
-    Subject.findOne(query, callback);
-}
+    let conditions = Object.keys(query_conditions).reduce((result, key) => {
+        if(query_conditions[key]){
+            result[key] = query_conditions[key];
+        }
+        return result;
+    }, {});
 
-module.exports.getSubjectsByCategory = function (category, callback){
-    const query = {category: category};
-    Subject.find(query, callback);
-}
+    if(keys.documents != undefined) conditions.documents = {$all: keys.documents};
+    if(keys.employees != undefined) conditions.employees = {$all: keys.employees};
+    if(keys.keywords != undefined) conditions.keywords = {$all: keys.keywords};
 
-module.exports.getSubjectsBySubmitter = function (submitter, callback){
-    const query = {submitter: submitter};
-    Subject.find(query, callback);
-}
+    const query = {
+        id_number: params.id_number, 
+        title: params.title,
+        submission_date: params.submission_date,
+        description: params.description,
+        keywords: params.keywords,
+        category: params.category,
+        submitter: params.submitter,
+        employees: params.employees,
+        department: params.department,
+        documents: params.documents
+    }
 
-module.exports.getSubjectsByDepartment = function (department, callback){
-    const query = {department: department};
-    Subject.find(query, callback);
-}
+    let update_params = Object.keys(query).reduce((result, key) => {
+        if(query[key]){
+            result[key] = query[key];
+        }
+        return result;
+    }, {});
 
-module.exports.getSubjectsByEmployees = function (employees, callback){
-    const query = {employees: {$all: employees}};
-    Subject.find(query, callback);
-}
+    let set_param = {
+        $set: update_params
+    };
 
-module.exports.getSubjectByDocuments = function (documents, callback){
-    const query = {documents: {$all: documents}};
-    Subject.find(query, callback);
-}
+    Subject.updateMany(conditions,set_param, callback);
 
-module.exports.updateSubjectTitle = function (param, new_title, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$set": {"title": new_title}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$set": {"title": new_title}}, callback);
-    }
 }
-
-module.exports.updateSubjectDescription = function (param, description, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$set": {"description": description}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$set": {"description": description}}, callback);
-    }
-}
-
-// If needed to add additional keywords
-module.exports.addSubjectKeywords = function (param, keywords, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$addToSet": {"keywords": {"$each": keywords}}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$addToSet": {"keywords": {"$each": keywords}}}, callback);
-    }
-}
-
-module.exports.updateSubjectKeywords = function (param, keywords, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$set": {"keywords": keywords}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$set": {"keywords": keywords}}, callback);
-    }
-}
-
-module.exports.updateSubjectCategory = function (param, category, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": title}, {"$set": {"category": category}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$set": {"category": category}}, callback);
-    }
-}
-
-// Add addition employees
-module.exports.addSubjectEmployees = function (param, employees, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$addToSet": {"employees": {"$each": employees}}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$addToSet": {"employees": {"$each": employees}}}, callback);
-    }
-}
-
-module.exports.updateSubjectEmployees = function (param, employees, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$set": {"employees": employees}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$set": {"employees": employees}}, callback);
-    }
-}
-
-module.exports.updateSubjectDepartment = function (param, department, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$set": {"department": department}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$set": {"department": department}}, callback);
-    }
-}
-
-// Add additional documents
-module.exports.addSubjectDocuments = function (param, documents, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": param}, {"$addToSet": {"documents": {"$each": documents}}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": param}, {"$addToSet": {"documents": {"$each": documents}}}, callback);
-    }
-}
-
-// Update documents
-module.exports.updateSubjectDocuments = function (param, documents, callback){
-    if(typeof param == "string"){
-        Subject.updateOne({"title": title}, {"$set": {"documents": documents}}, callback);
-    }
-    else if (typeof param == "number"){
-        Subject.updateOne({"id_number": title}, {"$set": {"documents": documents}}, callback);
-    }
-}
-
 
 module.exports.AddSubject = function (newSubject, callback){
     newSubject.save(callback);

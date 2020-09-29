@@ -21,24 +21,18 @@ router.post('/register', (req, res, next) => {
       });
       
       User.getUserByUsername(newUser.username, (err, user) => {
-          if(err){ res.json({success: false, msg: `Database error: ${err}`});}
+          if(err){ res.json({success: false, msg: `Greska u bazi: ${err}`});}
           if(!user){
             User.addUser(newUser, (err, user) => {
               if(err) {
-                res.json({success: false, msg: 'Failed to register user'});
+                res.json({success: false, msg: 'Neuspjesna registracija'});
               } else {
-                res.json({success: true, msg: 'User request recorded'});
+                res.json({success: true, msg: 'Kreiran nalog'});
               }
             });
           }
           else if (user) {
-            if(user.request == false && user.approved == false)
-            res.json({success: false, msg: 'User request not approved'});
-
-            else if(user.request == true && user.approved == false)
-            res.json({success: false, msg: 'User registration pending'});
-
-            else res.json({success: false, msg: 'User with that username already exists'});
+            res.json({success: false, msg: 'Korisnicko ime je zauzeto'});
           }
 
       });
@@ -54,7 +48,7 @@ router.post('/authenticate', (req, res, next) => {
       if(err) throw err;
 
       if(!user){
-        return res.json({success: false, msg: 'User not found'});
+        return res.json({success: false, msg: 'Korisnik nije pronadjen'});
       }
 
       User.comparePassword(password, user.password, (error, isMatch) => {
@@ -78,7 +72,7 @@ router.post('/authenticate', (req, res, next) => {
         }
 
         else {
-          return res.json({success: false, msg: 'Wrong password'});
+          return res.json({success: false, msg: 'Pogresna lozinka'});
         }
       });
     });

@@ -47,57 +47,97 @@ const DocumentSchema = mongoose.Schema ({
 const Doc = module.exports = mongoose.model('documents', DocumentSchema);
 
 // Getters
-module.exports.getDocumentsByTitle = function(title, callback){
-  const query = {title: title};
-  Doc.find(query, callback);
-}
+// Get archived or unarchived documents by criteria
+module.exports.getDocuments = function(params, archived, callback){
+  const query = {
+    title: params.title,
+    submission_date: params.submission_date,
+    description: params.description,
+    subject: params.subject,
+    archived: archived
+  }
 
-module.exports.getDocumentByTitleAndSubjectName = function(title, subject_name, callback){
-  const query = {title: title, subject: subject_name, archived: false};
-  Doc.findOne(query, callback);
-}
-
-// Get both archived and unarchived documents
-module.exports.getAllDocumentsByTitleAndSubjectName = function(title, subject_name, callback){
-  const query = {title: title, subject: subject_name};
-  Doc.find(query, callback);
-}
-
-module.exports.getDocumentsByTags = function(tags, callback){
-  const query = {tags: {$all: tags}};
-  Doc.find(query, callback);
-}
-
-module.exports.getDocumentByTitleAndSubjectId = function(title, id_number, callback){
-  const query = {id_number: id_number};
-  Subject.findOne(query, (err, data) => {
-    if(err) throw err;
-    else{
-      query = {
-        title: title,
-        subject: data.subject_name
-      }
+// Filtering undefined values from query
+let conditions = Object.keys(query).reduce((result, key) => {
+    if(query[key]){
+        result[key] = query[key];
     }
-    Doc.findOne(query, callback);
-  });
-}
+    else if (key == 'archived' && query[key] != undefined) result[key] = query[key];
+    return result;
+}, {});
+
+if(params.tags != undefined) conditions.tags = {$all: params.tags};
+
+Doc.find(conditions, callback);
+}; 
+
+// Get both archived and unarchived documents by criteria
+module.exports.getAllDocuments = function(params, callback){
+  const query = {
+    title: params.title,
+    submission_date: params.submission_date,
+    description: params.description,
+    subject: params.subject
+  }
+
+// Filtering undefined values from query
+let conditions = Object.keys(query).reduce((result, key) => {
+    if(query[key]){
+        result[key] = query[key];
+    }
+    return result;
+}, {});
+
+if(params.tags != undefined) conditions.tags = {$all: params.tags};
+
+Doc.find(conditions, callback);
+}; 
 
 // Modifying documents
-module.exports.setArchivedDocument = function(title, subject_name, callback){
-  Doc.updateOne({"title": title, "subject": subject_name, "archived": false}, {"$set": {"archived": true}}, callback);
+module.exports.updateDocuments = function(keys, params, callback){
+  const query_conditions = {
+    title: keys.title,
+    submission_date: keys.submission_date,
+    description: keys.description,
+    subject: keys.subject,
+    archived: false //only non archived documents may be modified
+};
+
+let conditions = Object.keys(query_conditions).reduce((result, key) => {
+    if(query_conditions[key]){
+        result[key] = query_conditions[key];
+    }
+    else if (key == 'archived' && query_conditions[key] != undefined) result[key] = query_conditions[key];
+    return result;
+}, {});
+
+if(keys.tags != undefined) conditions.tags = {$all: keys.tags};
+
+const query = {
+    title: params.title,
+    submission_date: params.submission_date,
+    description: params.description,
+    subject: params.subject,
+    archived: params.archived,
+    tags: params.tags
 }
 
-module.exports.updateDescription = function(title, subject_name, description, callback){
-  Doc.updateOne({"title": title, "subject": subject_name, "archived": false}, {"$set": {"description": description}}, callback);
-}
+let update_params = Object.keys(query).reduce((result, key) => {
+    if(query[key]){
+        result[key] = query[key];
+    }
+    else if (key == 'archived' && query[key] != undefined) result[key] = query[key];
+    return result;
+}, {});
 
-module.exports.updateTags = function (title, subject_name, tags, callback){
-  Doc.updateOne({"title": title, "subject": subject_name, "archived": false}, {"$set": {"tags": tags}}, callback);
-}
 
-module.exports.updateTitle = function (title, subject_name, new_title, callback){
-  Doc.updateOne({"title": title, "subject": subject_name, "archived": false}, {"$set": {"title": new_title}}, callback);
-}
+
+let set_param = {
+    $set: update_params
+};
+
+Doc.updateMany(conditions,set_param, callback);
+};
 
 module.exports.addNewDocument = function(newDocument, callback){
   let titles = [newDocument.title];
