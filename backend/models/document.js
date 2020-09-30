@@ -17,8 +17,8 @@ const DocumentSchema = mongoose.Schema ({
       required: true
   },
 
-  subject: {
-    type: String,
+  subjects: {
+    type: [String],
     required: true
   },
 
@@ -53,7 +53,6 @@ module.exports.getDocuments = function(params, archived, callback){
     title: params.title,
     submission_date: params.submission_date,
     description: params.description,
-    subject: params.subject,
     archived: archived
   }
 
@@ -67,8 +66,9 @@ let conditions = Object.keys(query).reduce((result, key) => {
 }, {});
 
 if(params.tags != undefined) conditions.tags = {$all: params.tags};
+if(params.subjects != undefined) conditions.subjects = {$all: params.subjects};
 
-Doc.find(conditions, callback);
+Doc.find(conditions).lean().exec(callback);
 }; 
 
 // Get both archived and unarchived documents by criteria
@@ -77,7 +77,6 @@ module.exports.getAllDocuments = function(params, callback){
     title: params.title,
     submission_date: params.submission_date,
     description: params.description,
-    subject: params.subject
   }
 
 // Filtering undefined values from query
@@ -89,8 +88,9 @@ let conditions = Object.keys(query).reduce((result, key) => {
 }, {});
 
 if(params.tags != undefined) conditions.tags = {$all: params.tags};
+if(params.subjects != undefined) conditions.subjects = {$all: params.subjects};
 
-Doc.find(conditions, callback);
+Doc.find(conditions).lean().exec(callback);
 }; 
 
 // Modifying documents
@@ -99,7 +99,6 @@ module.exports.updateDocuments = function(keys, params, callback){
     title: keys.title,
     submission_date: keys.submission_date,
     description: keys.description,
-    subject: keys.subject,
     archived: false //only non archived documents may be modified
 };
 
@@ -112,12 +111,14 @@ let conditions = Object.keys(query_conditions).reduce((result, key) => {
 }, {});
 
 if(keys.tags != undefined) conditions.tags = {$all: keys.tags};
+// subjects are part of primary key
+conditions.subjects = keys.subjects;
 
 const query = {
     title: params.title,
     submission_date: params.submission_date,
     description: params.description,
-    subject: params.subject,
+    subjects: params.subjects,
     archived: params.archived,
     tags: params.tags
 }
@@ -136,14 +137,47 @@ let set_param = {
     $set: update_params
 };
 
-Doc.updateMany(conditions,set_param, callback);
+// If we are changing subjects
+if(update_params.subjects != undefined){
+  Subject.RemoveDocument(conditions.subjects, conditions.title, (err, data) => {
+    if(err) throw err;
+    else {
+        Doc.updateMany(conditions,set_param, callback);
+    }
+  });
+}
+
+else {
+  Doc.updateMany(conditions,set_param, callback);
+}
+
 };
+
+module.exports.DeleteDocument = function (title, subjects, callback){
+    Subject.RemoveDocument(subjects, title, (err,data) => {
+      if(err) throw err;
+      else {
+        Doc.deleteOne({title: title, subjects: {$all: subjects}}, callback);
+      }
+    });
+}
+
+module.exports.SubjectRemoved = function(subject, callback){
+  Doc.deleteMany({subjects: subject, subjects: {$size: 1}}, (err, data) => {
+    if(err) throw err;
+    else {
+      Doc.updateMany({subjects: subject}, {$pull: {subjects: {$all: subject}}}, callback);
+    }
+  });
+}
 
 module.exports.addNewDocument = function(newDocument, callback){
   let titles = [newDocument.title];
   // Waiting is not needed
-  Subject.addSubjectDocuments(newDocument.subject, titles, (err, data) => {
+  Subject.addDocument(newDocument.subjects, titles, (err, data) => {
     if(err) throw err;
+    else{
+      newDocument.save(callback);
+    }
   });
-  newDocument.save(callback);
 }

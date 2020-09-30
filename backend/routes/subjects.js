@@ -5,6 +5,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const Subject = require('../models/subject');
+const Doc = require('../models/document');
 var moment = require('moment');
 const { route } = require('./users');
 
@@ -41,7 +42,6 @@ router.post('/addnewsubject', (req, res, next) => {
         if(subject.length != 0) {
             res.json({success: false,
             msg: 'Predmet pod tim imenom vec postoji',
-            subject: subject
         });
         }
         else{
@@ -66,6 +66,23 @@ router.post('/addnewsubject', (req, res, next) => {
                     res.json({success: true, msg: 'Zaveden novi predmet'});
                 }
             })
+        }
+    });
+});
+
+
+router.post('/deletesubject', (req, res, next) => {
+    Doc.SubjectRemoved(req.body.title, (err, data) => {// mora ovako zbog kruznih zavisnosti Doc -> Subject i Subject -> Doc
+        if(err) throw err;
+        else {
+            Subject.deleteOne({title: req.body.title}, (err, data) => {
+                if(err){
+                    res.json({success: false, msg: err.description});
+                }
+                else {
+                    res.json({success:true, msg: 'Uspjesno obrisan predmet'});
+                }
+            });
         }
     });
 });

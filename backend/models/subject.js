@@ -64,7 +64,6 @@ const Subject = module.exports = mongoose.model('subjects', SubjectSchema);
 module.exports.getSubjects = function(params, callback){
     const query = {
         id_number: params.id_number, 
-        title: params.title,
         submission_date: params.submission_date,
         description: params.description,
         //keywords: params.keywords,
@@ -83,11 +82,15 @@ module.exports.getSubjects = function(params, callback){
         return result;
     }, {});
 
+    if(params.title != undefined) {
+        if(params.title.length == undefined) conditions.title = {$all: params.title};
+        else conditions.title = {$in: params.title};
+    }
     if(params.documents != undefined) conditions.documents = {$all: params.documents};
     if(params.employees != undefined) conditions.employees = {$all: params.employees};
     if(params.keywords != undefined) conditions.keywords = {$all: params.keywords};
 
-    Subject.find(conditions, callback);
+    Subject.find(conditions).lean().exec(callback);
 }
 
 // Universal update subject. It can update more than one subject if, for example the criteria is by keywords
@@ -95,7 +98,6 @@ module.exports.getSubjects = function(params, callback){
 module.exports.updateSubjects = function (keys, params, callback){
     const query_conditions = {
         id_number: keys.id_number, 
-        title: keys.title,
         submission_date: keys.submission_date,
         description: keys.description,
         category: keys.category,
@@ -110,6 +112,10 @@ module.exports.updateSubjects = function (keys, params, callback){
         return result;
     }, {});
 
+    if(keys.title != undefined) {
+        if(keys.title.length == undefined) conditions.title = {$all: keys.title};
+        else conditions.title = {$in: keys.title};
+    }
     if(keys.documents != undefined) conditions.documents = {$all: keys.documents};
     if(keys.employees != undefined) conditions.employees = {$all: keys.employees};
     if(keys.keywords != undefined) conditions.keywords = {$all: keys.keywords};
@@ -140,6 +146,14 @@ module.exports.updateSubjects = function (keys, params, callback){
 
     Subject.updateMany(conditions,set_param, callback);
 
+}
+
+module.exports.addDocument = function (titles, document, callback){
+    Subject.updateMany({title: {$in: titles}}, {$addToSet: {documents: document}}, callback);
+}
+
+module.exports.RemoveDocument = function(titles, document, callback){
+    Subject.updateMany({title: {$in: titles}}, {$pull: {documents: {$all: document}}}, callback);
 }
 
 module.exports.AddSubject = function (newSubject, callback){
