@@ -50,7 +50,6 @@ const Doc = module.exports = mongoose.model('documents', DocumentSchema);
 // Get archived or unarchived documents by criteria
 module.exports.getDocuments = function(params, archived, callback){
   const query = {
-    title: params.title,
     submission_date: params.submission_date,
     description: params.description,
     archived: archived
@@ -65,6 +64,10 @@ let conditions = Object.keys(query).reduce((result, key) => {
     return result;
 }, {});
 
+if(params.title != undefined) {
+  if(params.title.length == undefined) conditions.title = {$all: params.title};
+  else conditions.title = {$in: params.title};
+}
 if(params.tags != undefined) conditions.tags = {$all: params.tags};
 if(params.subjects != undefined) conditions.subjects = {$all: params.subjects};
 
@@ -168,6 +171,13 @@ module.exports.SubjectRemoved = function(subject, callback){
     else {
       Doc.updateMany({subjects: subject}, {$pull: {subjects: {$all: subject}}}, callback);
     }
+  });
+}
+
+module.exports.SubjectChangedDocuments = function (titles_old, titles_new, subject, callback){
+  Doc.updateMany({title: {$in: titles_old}}, {$pull: {subjects: {$all: subject}}}, (err, data) => {
+    if(err) throw err;
+    else Doc.updateMany({title: {$in: titles_new}}, {$addToSet: {subjects: subject}}, callback);
   });
 }
 

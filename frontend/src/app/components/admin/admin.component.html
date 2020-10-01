@@ -1,1 +1,70 @@
-<p>admin works!</p>
+<h2 class="page-header">Dobrodošli</h2>
+<div *ngIf="!usersVisible"><button (click)="toggleUsersVisible()">Pregledaj bazu korisnika</button></div>
+<div *ngIf="usersVisible"><button (click)="toggleUsersVisible()">Sakrij pregled baze</button></div>
+<div *ngIf="users?.length != 0 && usersVisible">
+    <table class="table">
+        <thead>
+            <th scope="col">Ime</th>
+            <th scope="col">Prezime</th>
+            <th scope="col">Korisnicko ime</th>
+            <th scope="col">Email</th>
+            <th scope="col">Odsjek</th>
+            <th scope="col">Tip</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let stavka of users">
+                <td>{{stavka.name}}</td>
+                <td>{{stavka.surname}}</td>
+                <td>{{stavka.username}}</td>
+                <td>{{stavka.email}}</td>
+                <td>{{stavka.department}}</td>
+                <td>{{stavka.type === 'worker'? 'Radnik': 'Zaposleni'}}</td>
+                <td><button (click)="deleteUser(stavka)">Obriši korisnika</button>
+                    <hr>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="!addUserFormVisible"><button (click)="toggleAddUsers()">Dodavanje korisnika</button></div>
+<div *ngIf="addUserFormVisible"><button (click)="toggleAddUsers()">Sakrij formu za dodavanje korisnika</button></div>
+<form *ngIf="addUserFormVisible" (submit)="registerUser()">
+    <div class="form-group">
+        <label>Ime</label>
+        <input type="text" [(ngModel)]="name" name="name" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Prezime</label>
+        <input type="text" [(ngModel)]="surname" name="surname" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="text" [(ngModel)]="email" name="email" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Tajno pitanje</label>
+        <input type="text" [(ngModel)]="secretQ" name="secretQ" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Odgovor na tajno pitanje</label>
+        <input type="text" [(ngModel)]="secretA" name="secretA" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Korisnicko ime</label>
+        <input type="text" [(ngModel)]="username" name="username" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Lozinka</label>
+        <input type="text" [(ngModel)]="password" name="password" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Odsjek</label>
+        <input type="text" [(ngModel)]="department" name="department" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Tip</label><br>
+        <input type="radio" [(ngModel)]="type" name="type" value="worker" checked> Radnik<br>
+        <input type="radio" [(ngModel)]="type" name="typer" value="employee"> Zaposleni<br>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Submit">
+</form><br>

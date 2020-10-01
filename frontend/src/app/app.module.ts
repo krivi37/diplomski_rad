@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule} from '@angular/common/http';
+import { JwtModule, JwtHelperService } from "@auth0/angular-jwt";
 
+import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -11,10 +15,11 @@ import { ForgottenpassComponent } from './components/forgottenpass/forgottenpass
 import { AdminComponent } from './components/admin/admin.component';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { WorkerComponent } from './components/worker/worker.component';
-import { UserComponent } from './components/user/user.component';
 import { DocumentComponent } from './components/document/document.component';
 import { SubjectComponent } from './components/subject/subject.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AuthService } from './services/auth.service';
+import { AuthGuardService } from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -27,16 +32,25 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AdminComponent,
     EmployeeComponent,
     WorkerComponent,
-    UserComponent,
     DocumentComponent,
     SubjectComponent,
     NavbarComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FlashMessagesModule,
+    FormsModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('id_token');
+        }
+      }
+    })
   ],
-  providers: [],
+  providers: [AuthService ,FlashMessagesService, JwtHelperService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

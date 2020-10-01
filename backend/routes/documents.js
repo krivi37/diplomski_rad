@@ -10,7 +10,7 @@ var moment = require('moment');
 //Getters
 
 //New Doc
-router.post('/addnewdocument', (req, res, next) => {
+router.post('/addnewdocument',  passport.authenticate('worker-rule', {session: false}), (req, res, next) => {
     let newDocument = new Doc({
         type: req.body.type,
         submission_date: moment().format("YYYY-MM-DD"),
@@ -83,7 +83,7 @@ router.post('/addnewdocument', (req, res, next) => {
 
 //Getters
 
-router.post('/getunarchiveddocuments', (req, res, next) => {
+router.post('/getunarchiveddocuments',  passport.authenticate(['worker-rule', 'employee-rule'], {session: false}), (req, res, next) => {
     Doc.getDocuments(req.body, false, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
@@ -94,7 +94,7 @@ router.post('/getunarchiveddocuments', (req, res, next) => {
     });
 });
 
-router.post('/getarchiveddocuments', (req, res, next) => {
+router.post('/getarchiveddocuments',  passport.authenticate(['worker-rule', 'employee-rule'], {session: false}), (req, res, next) => {
     Doc.getDocuments(req.body, true, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
@@ -105,7 +105,7 @@ router.post('/getarchiveddocuments', (req, res, next) => {
     });
 });
 
-router.post('/getalldocuments', (req, res, next) => {
+router.post('/getalldocuments',  passport.authenticate(['worker-rule', 'employee-rule'], {session: false}), (req, res, next) => {
     Doc.getAllDocuments(req.body, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
@@ -117,7 +117,7 @@ router.post('/getalldocuments', (req, res, next) => {
 });
 
 // Setter
-router.post('/updatedocuments', (req, res, next) => {
+router.post('/updatedocuments',  passport.authenticate(['worker-rule', 'employee-rule'], {session: false}), (req, res, next) => {
     Doc.updateDocuments(req.body.keys, req.body.params, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
@@ -128,7 +128,7 @@ router.post('/updatedocuments', (req, res, next) => {
     });
 });
 
-router.post('/deletedocument', (req, res, next) => {
+router.post('/deletedocument',  passport.authenticate('worker-rule', {session: false}), (req, res, next) => {
     Doc.DeleteDocument(req.body.title, req.body.subjects, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});

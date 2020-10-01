@@ -1,1 +1,36 @@
-<p>navbar works!</p>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Mini pisarnica</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li *ngIf = "!authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
+          <a class="nav-link" [routerLink]="['/']">Pocetna stranica</a>
+        </li>
+        <li *ngIf = "authService.getUserType() == 'admin' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
+            <a class="nav-link" [routerLink]="['admin']">Baza korisnika</a>
+        </li>
+        <li *ngIf = "authService.getUserType() == 'worker' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
+            <a class="nav-link" [routerLink]="['worker']">Pregled dokumenata/predmeta</a>
+        </li>
+        <li *ngIf = "authService.getUserType() == 'worker' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
+            <a class="nav-link" [routerLink]="['subject']">Dodavanje predmeta</a>
+        </li>
+        <li *ngIf = "authService.getUserType() == 'worker' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
+            <a class="nav-link" [routerLink]="['document']">Dodavanje dokumenata</a>
+        </li>
+        <li *ngIf = "authService.getUserType() == 'employee' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
+            <a class="nav-link" [routerLink]="['employee']">Pregled dokumenata/predmeta</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+            <li *ngIf = "authService.loggedIn()">
+                <a class="nav-link" [routerLink]="['changepassword']">Promijeni lozinku </a>
+            </li>
+            <li *ngIf = "authService.loggedIn()">
+              <a class="nav-link" (click) = onLogoutClick() href = '#'>Izloguj se </a>
+            </li>
+      </ul>
+    </div>
+  </nav>

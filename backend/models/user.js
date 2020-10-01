@@ -52,8 +52,16 @@ const UserSchema = mongoose.Schema ({
 
 const User = module.exports = mongoose.model('users', UserSchema);
 
+module.exports.getAllNonAdmins = function(callback) {
+  User.find({type: {$ne: 'admin'}}).lean().exec(callback);
+}
+
 module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
+}
+
+module.exports.deleteUser = function(username, callback){
+  User.deleteOne({username: username}, callback);
 }
 
 module.exports.getUserByUsername = function(user, callback){

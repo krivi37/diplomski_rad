@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WorkerComponent implements OnInit {
 
+  subjects: Array<any>;
+  documents: Array<any>;
+
   constructor() { }
 
   ngOnInit(): void {

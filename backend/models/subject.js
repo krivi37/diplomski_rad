@@ -130,7 +130,7 @@ module.exports.updateSubjects = function (keys, params, callback){
         submitter: params.submitter,
         employees: params.employees,
         department: params.department,
-        documents: params.documents
+        //documents: params.documents
     }
 
     let update_params = Object.keys(query).reduce((result, key) => {
