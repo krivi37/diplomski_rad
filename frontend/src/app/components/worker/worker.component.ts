@@ -55,17 +55,17 @@ export class WorkerComponent implements OnInit {
     if (this.keywords) {
       keywords_array = this.keywords.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       keywords_array = keywords_array.filter(x => x != "");
-      keywords_array = keywords_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      keywords_array = keywords_array.map(x => x.replace(/\"/g, ""));
     }
     if (this.document_names) {
       documents_array = this.document_names.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       documents_array = documents_array.filter(x => x != "");
-      documents_array = documents_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      documents_array = documents_array.map(x => x.replace(/\"/g, ""));
     }
     if (this.employees) {
       employees_array = this.employees.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       employees_array = employees_array.filter(x => x != "");
-      employees_array = employees_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      employees_array = employees_array.map(x => x.replace(/\"/g, ""));
     }
     let subject = {
       id_number: this.id_number,
@@ -104,12 +104,12 @@ export class WorkerComponent implements OnInit {
     if (this.document_tags) {
       document_tags_array = this.document_tags.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       document_tags_array = document_tags_array.filter(x => x != "");
-      document_tags_array = document_tags_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      document_tags_array = document_tags_array.map(x => x.replace(/\"/g, ""));
     }
     if (this.document_subjects) {
       document_subjects_array = this.document_subjects.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       document_subjects_array = document_subjects_array.filter(x => x != "");
-      document_subjects_array = document_subjects_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      document_subjects_array = document_subjects_array.map(x => x.replace(/\"/g, ""));
     }
     let document = {
       document_title: this.document_title,

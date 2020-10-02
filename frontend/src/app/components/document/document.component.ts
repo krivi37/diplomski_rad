@@ -55,12 +55,12 @@ export class DocumentComponent implements OnInit {
     }
     let document_tags_array = this.document_tags.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
     document_tags_array = document_tags_array.filter(x => x != "");
-    document_tags_array = document_tags_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+    document_tags_array = document_tags_array.map(x => x.replace(/\"/g, ""));
 
     // Ovo je uradjeno kako bi se ignorisali bijeli karakteri unutar navodnika, a takodje se izbacuju sami navodnici iz niza nakon uparivanja
     let document_subjects_array = this.document_subjects.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
     document_subjects_array = document_subjects_array.filter(x => x != "");
-    document_subjects_array = document_subjects_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+    document_subjects_array = document_subjects_array.map(x => x.replace(/\"/g, ""));
 
     let subject_names = this.subjects.map(a => a.title);
     let difference = document_subjects_array.filter(x => !subject_names.includes(x));
@@ -81,6 +81,7 @@ export class DocumentComponent implements OnInit {
         }
         else {
           this.flashMessage.show("Uspjesno dodat novi dokument!", { cssClass: 'alert-success', timeout: 2000 });
+          this.toggleAddDocumentVisible();
         }
       });
     }
@@ -93,12 +94,12 @@ export class DocumentComponent implements OnInit {
     if (this.document_tags) {
       document_tags_array = this.document_tags.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       document_tags_array = document_tags_array.filter(x => x != "");
-      document_tags_array = document_tags_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      document_tags_array = document_tags_array.map(x => x.replace(/\"/g, ""));
     }
     if (this.document_subjects) {
       document_subjects_array = this.document_subjects.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       document_subjects_array = document_subjects_array.filter(x => x != "");
-      document_subjects_array = document_subjects_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      document_subjects_array = document_subjects_array.map(x => x.replace(/\"/g, ""));
     }
     let difference;
     if (this.document_subjects) {
@@ -153,6 +154,7 @@ export class DocumentComponent implements OnInit {
         }
         else {
           this.flashMessage.show("Uspjesno azuriran dokument!", { cssClass: 'alert-success', timeout: 2000 });
+          this.toggleModifyDocumentVisible();
         }
       });
     }

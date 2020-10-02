@@ -71,7 +71,7 @@ export class SubjectComponent implements OnInit {
     }
     let employee_array = this.subject_employees.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
     employee_array = employee_array.filter(x => x != "");
-    employee_array = employee_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+    employee_array = employee_array.map(x => x.replace(/\"/g, ""));
     let employee_names = this.employees.map(a => a.username);
     let difference = employee_array.filter(x => !employee_names.includes(x));
     if (difference.length != 0) {
@@ -80,7 +80,7 @@ export class SubjectComponent implements OnInit {
     }
     let keywords_array = this.keywords.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
     keywords_array = keywords_array.filter(x => x != "");
-    keywords_array = keywords_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+    keywords_array = keywords_array.map(x => x.replace(/\"/g, ""));
     let newSubject = {
       title: this.title,
       keywords: keywords_array,
@@ -108,17 +108,17 @@ export class SubjectComponent implements OnInit {
     if (this.document_names) {
       documents_array = this.document_names.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       documents_array = documents_array.filter(x => x != "");
-      documents_array = documents_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      documents_array = documents_array.map(x => x.replace(/\"/g, ""));
     }
     if (this.keywords) {
       keywords_array = this.keywords.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       keywords_array = keywords_array.filter(x => x != "");
-      keywords_array = keywords_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      keywords_array = keywords_array.map(x => x.replace(/\"/g, ""));
     }
     if (this.subject_employees) {
       employee_array = this.subject_employees.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       employee_array = employee_array.filter(x => x != "");
-      employee_array = employee_array.map(x => x.match(/[^\"].*[^\"]/)[0]);
+      employee_array = employee_array.map(x => x.replace(/\"/g, ""));
     }
     let difference;
     if (this.subject_employees) {
