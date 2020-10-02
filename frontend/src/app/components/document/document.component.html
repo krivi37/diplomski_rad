@@ -1,1 +1,69 @@
-<p>document works!</p>
+<div class="mt-1" *ngIf="!addDocumentVisible"><button class="btn btn-primary"
+        (click)="toggleAddDocumentVisible()">Dodavanje dokumenta</button></div>
+<div class="mt-1" *ngIf="addDocumentVisible"><button class="btn btn-primary" (click)="toggleAddDocumentVisible()">Sakrij
+        formu za dodavanje dokumenta</button></div>
+<form class="mt-1" *ngIf="addDocumentVisible" (submit)="addDocument()">
+    <div class="form-group">
+        <label>Naslov</label>
+        <input type="text" [(ngModel)]="document_title" name="document_title" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Predmeti</label>
+        <input type="text" [(ngModel)]="document_subjects" name="document_subjects" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Opis</label>
+        <input type="text" [(ngModel)]="document_description" name="document_description" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Tagovi</label>
+        <input type="text" [(ngModel)]="document_tags" name="document_tags" class="form-control">
+    </div>
+    <input type="submit" class="btn btn-primary" value="Dodaj dokument">
+</form><br>
+
+<div class="mt-1" *ngIf="!modifyDocumentVisible"><button class="btn btn-primary"
+        (click)="toggleModifyDocumentVisible()">Izmijeni dokument</button></div>
+<div class="mt-1" *ngIf="modifyDocumentVisible"><button class="btn btn-primary"
+        (click)="toggleModifyDocumentVisible()">Sakrij
+        formu za izmjenu dokumenta</button></div>
+
+<div class="mt-1" *ngIf="modifyDocumentVisible">
+    <div class="form-group">
+        <label>Naziv dokumenta</label>
+        <select class="form-control" [(ngModel)]="selected">
+            <option *ngFor="let doc of documents" [ngValue]="doc">{{doc.title}}</option>
+        </select>
+    </div>
+    <div *ngIf="selected != undefined && modifyDocumentVisible">
+        <table class="table">
+            <thead>
+                <th scope="col">Predmeti</th>
+                <th scope="col">Opis</th>
+                <th scope="col">Tagovi</th>
+                <th scope="col">Datum</th>
+            </thead>
+            <tbody>
+                <td> {{selected.subjects}}</td>
+                <td> {{selected.description}}</td>
+                <td> {{selected.tags}}</td>
+                <td> {{selected.submission_date}}</td>
+            </tbody>
+        </table>
+    </div>
+    <form class="mt-1" (submit)="modifyDocument()">
+        <div class="form-group">
+            <label>Predmeti</label>
+            <input type="text" [(ngModel)]="document_subjects" name="document_subjects" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Opis</label>
+            <input type="text" [(ngModel)]="document_description" name="document_description" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Tagovi</label>
+            <input type="text" [(ngModel)]="document_tags" name="document_tags" class="form-control">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Izmijeni dokument">
+    </form><br>
+</div>

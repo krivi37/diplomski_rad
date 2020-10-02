@@ -42,6 +42,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  forgotPassword() : void {
+    this.router.navigate(['/forgottenpass']);
+  }
+
   ngOnInit(): void {
     localStorage.clear();
   }

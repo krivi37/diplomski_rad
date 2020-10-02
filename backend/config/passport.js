@@ -26,7 +26,7 @@ module.exports = function(passport) {
         return done(err, false);
       }
 
-      if(user && user.type == 'worker' && user.request == false) {
+      if(user && user.type == 'worker') {
         return done(null, user);
       } else {
         return done(null, false);

@@ -50,6 +50,17 @@ router.post('/deleteuser', passport.authenticate('admin-rule', { session: false 
   });
 });
 
+router.get('/getemployees', passport.authenticate(['employee-rule', 'worker-rule'], { session: false }), (req, res, next) => {
+  User.getEmployees((err, data) => {
+    if (err) {
+      res.json({ success: false, msg: `Database error: ${err}` });
+    }
+    else {
+      res.json({ success: true, employees: data });
+    }
+  });
+});
+
 router.get('/getnonadmins', passport.authenticate('admin-rule', { session: false }), (req, res, next) => {
   User.getAllNonAdmins((err, data) => {
     if (err) {
@@ -148,7 +159,7 @@ router.post('/getquestion', (req, res, next) => {
   User.getUserByUsername(username, (err, user) => {
     ;
     if (err) { res.json({ success: false, msg: `Database error: ${err}` }); }
-    return res.json({ success: true, msg: user.secretQ });
+    return res.json({ success: true, secret_question: user.secretQ });
   }
   )
 })
@@ -173,7 +184,7 @@ router.post('/checkpassword', (req, res, next) => {
         });
       }
       else {
-        return res.json({ success: false, msg: 'Pogresna lozinka' });
+        return res.json({ success: false, msg: 'Pogresna stara lozinka' });
       }
     });
   });

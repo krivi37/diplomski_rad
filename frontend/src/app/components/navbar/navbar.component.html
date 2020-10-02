@@ -15,10 +15,10 @@
             <a class="nav-link" [routerLink]="['worker']">Pregled dokumenata/predmeta</a>
         </li>
         <li *ngIf = "authService.getUserType() == 'worker' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
-            <a class="nav-link" [routerLink]="['subject']">Dodavanje predmeta</a>
+            <a class="nav-link" [routerLink]="['subject']">Dodavanje/izmjena predmeta</a>
         </li>
         <li *ngIf = "authService.getUserType() == 'worker' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
-            <a class="nav-link" [routerLink]="['document']">Dodavanje dokumenata</a>
+            <a class="nav-link" [routerLink]="['document']">Dodavanje/izmjena dokumenata</a>
         </li>
         <li *ngIf = "authService.getUserType() == 'employee' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
             <a class="nav-link" [routerLink]="['employee']">Pregled dokumenata/predmeta</a>
@@ -26,7 +26,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
             <li *ngIf = "authService.loggedIn()">
-                <a class="nav-link" [routerLink]="['changepassword']">Promijeni lozinku </a>
+                <a class="nav-link" [routerLink]="['changepass']">Promijeni lozinku </a>
             </li>
             <li *ngIf = "authService.loggedIn()">
               <a class="nav-link" (click) = onLogoutClick() href = '#'>Izloguj se </a>

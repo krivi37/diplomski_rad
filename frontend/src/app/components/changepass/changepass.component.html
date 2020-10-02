@@ -1,1 +1,32 @@
-<p>changepass works!</p>
+<form *ngIf = "forgotten && !finished" (submit) = "resetPassword()">
+    <div class="form-group">
+      <label>Unesite novu lozinku</label>
+      <input type="password" [(ngModel)]="newPassword" name="newPassword" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Ponovite novu lozinku</label>
+        <input type="password" [(ngModel)]="newPassword2" name="newPassword2" class="form-control">
+    </div>
+    <input type="submit" class="btn btn-primary" value="Postavi novu lozinku">
+</form>
+<form *ngIf = "changingPass && !finished" (submit) = "checkOldPassword()">
+    <div class="form-group">
+        <label>Unesite staru lozinku</label>
+        <input type="password" [(ngModel)]="oldPassword" name="oldPassword" class="form-control">
+      </div>
+    <div class="form-group">
+      <label>Unesite novu lozinku</label>
+      <input type="password" [(ngModel)]="newPassword" name="newPassword" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Ponovite novu lozinku</label>
+        <input type="password" [(ngModel)]="newPassword2" name="newPassword2" class="form-control">
+    </div>
+    <input type="submit" class="btn btn-primary" value="Promijeni lozinku">
+</form>
+<div *ngIf ="finished">
+    <a *ngIf = "forgotten" class="btn btn-primary" [routerLink]="['../home']">Nazad na pocetnu</a>
+    <a *ngIf = "userType == 'admin'" class="btn btn-primary" [routerLink]="['../admin']">Nazad na Vasu stranicu</a>
+    <a *ngIf = "userType == 'worker'" class="btn btn-primary" [routerLink]="['../worker']">Nazad na Vasu stranicu</a>
+    <a *ngIf = "userType == 'employee'" class="btn btn-primary" [routerLink]="['../employee']">Nazad na Vasu stranicu</a>
+</div>

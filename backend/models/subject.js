@@ -86,6 +86,7 @@ module.exports.getSubjects = function(params, callback){
         if(params.title.length == undefined) conditions.title = {$all: params.title};
         else conditions.title = {$in: params.title};
     }
+    if(conditions.submission_date != undefined) conditions.submission_date = moment(conditions.submission_date).format("YYYY-MM-DD");
     if(params.documents != undefined) conditions.documents = {$all: params.documents};
     if(params.employees != undefined) conditions.employees = {$all: params.employees};
     if(params.keywords != undefined) conditions.keywords = {$all: params.keywords};
@@ -119,6 +120,7 @@ module.exports.updateSubjects = function (keys, params, callback){
     if(keys.documents != undefined) conditions.documents = {$all: keys.documents};
     if(keys.employees != undefined) conditions.employees = {$all: keys.employees};
     if(keys.keywords != undefined) conditions.keywords = {$all: keys.keywords};
+    if(conditions.submission_date != undefined) conditions.submission_date = moment(conditions.submission_date).format("YYYY-MM-DD");
 
     const query = {
         id_number: params.id_number, 
@@ -130,7 +132,7 @@ module.exports.updateSubjects = function (keys, params, callback){
         submitter: params.submitter,
         employees: params.employees,
         department: params.department,
-        //documents: params.documents
+        documents: params.documents
     }
 
     let update_params = Object.keys(query).reduce((result, key) => {
@@ -139,6 +141,8 @@ module.exports.updateSubjects = function (keys, params, callback){
         }
         return result;
     }, {});
+
+    if(update_params.submission_date != undefined) update_params.submission_date = moment(update_params.submission_date).format("YYYY-MM-DD");
 
     let set_param = {
         $set: update_params

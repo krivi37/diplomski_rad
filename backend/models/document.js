@@ -64,12 +64,14 @@ let conditions = Object.keys(query).reduce((result, key) => {
     return result;
 }, {});
 
+
 if(params.title != undefined) {
   if(params.title.length == undefined) conditions.title = {$all: params.title};
   else conditions.title = {$in: params.title};
 }
 if(params.tags != undefined) conditions.tags = {$all: params.tags};
 if(params.subjects != undefined) conditions.subjects = {$all: params.subjects};
+if(conditions.submission_date != undefined) conditions.submission_date = moment(conditions.submission_date).format("YYYY-MM-DD");
 
 Doc.find(conditions).lean().exec(callback);
 }; 
@@ -92,6 +94,7 @@ let conditions = Object.keys(query).reduce((result, key) => {
 
 if(params.tags != undefined) conditions.tags = {$all: params.tags};
 if(params.subjects != undefined) conditions.subjects = {$all: params.subjects};
+if(conditions.submission_date != undefined) conditions.submission_date = moment(conditions.submission_date).format("YYYY-MM-DD");
 
 Doc.find(conditions).lean().exec(callback);
 }; 
@@ -113,6 +116,7 @@ let conditions = Object.keys(query_conditions).reduce((result, key) => {
     return result;
 }, {});
 
+if(conditions.submission_date != undefined) conditions.submission_date = moment(conditions.submission_date).format("YYYY-MM-DD");
 if(keys.tags != undefined) conditions.tags = {$all: keys.tags};
 // subjects are part of primary key
 conditions.subjects = keys.subjects;
@@ -134,7 +138,7 @@ let update_params = Object.keys(query).reduce((result, key) => {
     return result;
 }, {});
 
-
+if(update_params.submission_date != undefined) update_params.submission_date = moment(update_params.submission_date).format("YYYY-MM-DD");
 
 let set_param = {
     $set: update_params

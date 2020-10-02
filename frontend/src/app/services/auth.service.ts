@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  questioncheck: boolean;
+  forgottenusername: string;
+  forgottenemail: string;
   authToken: any;
   user: any;
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { 
+    this.questioncheck = false;
+  }
 
   authenticateUser(user) {
     let headers = new HttpHeaders();
@@ -49,6 +55,49 @@ export class AuthService {
     }
 
     return allowedRoles.includes(this.getUserType());
+  }
+
+  checkForgottenUser(user) : Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/forgottenpassword', user, { headers: headers });
+  }
+
+  getUserSecretQuestion(user) : Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/getquestion', user, { headers: headers });
+  }
+
+  checkSecretAnswer(answer: string) : Observable<any> {
+    const user = {
+      username: this.forgottenusername,
+      answer: answer
+    };
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/questioncheck', user, { headers: headers });
+  }
+
+  changePassword(username, password): Observable<any>{
+    const user = {
+      username: username,
+      newpass: password
+    };
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/resetpassword', user, { headers: headers });
+
+  }
+
+  checkOldPassword(username, password): Observable<any>{
+    const user = {
+      username: username,
+      oldpass: password
+    };
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/checkpassword', user, { headers: headers });
   }
 
 }

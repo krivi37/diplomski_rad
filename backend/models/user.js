@@ -92,8 +92,11 @@ module.exports.updatePassword = function(username, newpassword, callback){
     bcrypt.hash(newpassword, salt, (err, hash) => {
       if(err) throw err;
       password = hash;
-      console.log(password);
       User.updateOne({"username": username}, {"$set": {"password": password}}, callback);
     })
   })
+}
+
+module.exports.getEmployees = function(callback) {
+  User.find({type: 'employee'}).lean().exec(callback);
 }

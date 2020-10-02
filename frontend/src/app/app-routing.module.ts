@@ -16,7 +16,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'home', component: HomeComponent},
   {path: 'admin', component: AdminComponent, data:{allowedRoles: 'admin'}, canActivate: [AuthGuardService]},
-  {path: 'changepass', component: ChangepassComponent, data:{allowedRoles: ['employee', 'worker', 'admin']}, canActivate: [AuthGuardService]},
+  {path: 'changepass', component: ChangepassComponent},
   {path: 'document', component: DocumentComponent, data:{allowedRoles: ['employee', 'worker']}, canActivate: [AuthGuardService]},
   {path: 'employee', component: EmployeeComponent, data:{allowedRoles: 'employee'}, canActivate: [AuthGuardService]},
   {path: 'forgottenpass', component: ForgottenpassComponent},
