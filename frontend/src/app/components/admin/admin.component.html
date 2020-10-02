@@ -1,7 +1,7 @@
 <h2 class="page-header">Dobrodošli</h2>
-<div *ngIf="!usersVisible"><button (click)="toggleUsersVisible()">Pregledaj bazu korisnika</button></div>
-<div *ngIf="usersVisible"><button (click)="toggleUsersVisible()">Sakrij pregled baze</button></div>
-<div *ngIf="users?.length != 0 && usersVisible">
+<div class="mt-1" *ngIf="!usersVisible"><button class="btn btn-primary" (click)="toggleUsersVisible()">Pregledaj bazu korisnika</button></div>
+<div class="mt-1" *ngIf="usersVisible"><button class="btn btn-primary" (click)="toggleUsersVisible()">Sakrij pregled baze</button></div>
+<div class="mt-1" *ngIf="users?.length != 0 && usersVisible">
     <table class="table">
         <thead>
             <th scope="col">Ime</th>
@@ -26,9 +26,9 @@
         </tbody>
     </table>
 </div>
-<div *ngIf="!addUserFormVisible"><button (click)="toggleAddUsers()">Dodavanje korisnika</button></div>
-<div *ngIf="addUserFormVisible"><button (click)="toggleAddUsers()">Sakrij formu za dodavanje korisnika</button></div>
-<form *ngIf="addUserFormVisible" (submit)="registerUser()">
+<div class="mt-1" *ngIf="!addUserFormVisible"><button class="btn btn-primary" (click)="toggleAddUsers()">Dodavanje korisnika</button></div>
+<div class="mt-1" *ngIf="addUserFormVisible"><button class="btn btn-primary" (click)="toggleAddUsers()">Sakrij formu za dodavanje korisnika</button></div>
+<form class="mt-1" *ngIf="addUserFormVisible" (submit)="registerUser()">
     <div class="form-group">
         <label>Ime</label>
         <input type="text" [(ngModel)]="name" name="name" class="form-control">

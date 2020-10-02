@@ -1,1 +1,114 @@
-<p>employee works!</p>
+<div *ngIf="subjects || subjects?.length > 0">
+    <div class="mt-1" *ngIf="!showEmployeeSubjects"><button class="btn btn-primary"
+            (click)="toggleShowEmployeeSubjects()">Pregledajte Vase predmete</button>
+    </div>
+    <div class="mt-1" *ngIf="showEmployeeSubjects"><button class="btn btn-primary"
+            (click)="toggleShowEmployeeSubjects()">Sakrijte pregled</button></div>
+    <div *ngIf="subjects?.length > 0 && showEmployeeSubjects">
+        <table class="table">
+            <thead>
+                <th scope="col">Naziv</th>
+                <th scope="col">Identifikacioni broj</th>
+                <th scope="col">Opis</th>
+                <th scope="col">Kljucne rijeci</th>
+                <th scope="col">Podnosilac predmeta</th>
+                <th scope="col">Kategorija</th>
+                <th scope="col">Odsjek</th>
+                <th scope="col">Zaduzeni zaposleni</th>
+                <th scope="col">Dokumenti</th>
+                <th scope="col">Datum</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let stavka of subjects">
+                    <td> {{stavka.title}}</td>
+                    <td> {{stavka.id_number}}</td>
+                    <td> {{stavka.description}}</td>
+                    <td> {{stavka.keywords}}</td>
+                    <td> {{stavka.submitter}}</td>
+                    <td> {{stavka.category}}</td>
+                    <td> {{stavka.department}}</td>
+                    <td> {{stavka.employees}}</td>
+                    <td> {{stavka.documents}}</td>
+                    <td> {{stavka.submission_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-1" *ngIf="!showEmployeeDocuments"><button class="btn btn-info"
+            (click)="toggleShowEmployeeDocuments()">Pregledajte Vase dokumente</button>
+    </div>
+    <div class="mt-1" *ngIf="showEmployeeDocuments"><button class="btn btn-info"
+            (click)="toggleShowEmployeeDocuments()">Sakrijte pregled</button></div>
+    <div class="mt-1" *ngIf="subjects?.length > 0 && showEmployeeDocuments">
+        <table class="table">
+            <thead>
+                <th scope="col">Naziv</th>
+                <th scope="col">Predmeti</th>
+                <th scope="col">Opis</th>
+                <th scope="col">Tagovi</th>
+                <th scope="col">Datum</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let stavka of documents">
+                    <td> {{stavka.title}}</td>
+                    <td> {{stavka.subjects}}</td>
+                    <td> {{stavka.description}}</td>
+                    <td> {{stavka.tags}}</td>
+                    <td> {{stavka.submission_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="mt-1" *ngIf="!transferSubjectToEmployee"><button class="btn btn-secondary"
+            (click)="toggleTransferSubjectToEmployee()">Proslijedjivanje predmeta</button></div>
+    <div class="mt-1" *ngIf="transferSubjectToEmployee"><button class="btn btn-secondary"
+            (click)="toggleTransferSubjectToEmployee()">Sakrijte</button></div>
+    <div class="mt-1" *ngIf="transferSubjectToEmployee">
+        <div class="form-group">
+            <label>Naziv predmeta</label>
+            <select class="form-control" [(ngModel)]="selected_subject">
+                <option *ngFor="let subject of subjects" [ngValue]="subject">{{subject.title}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Korisnicko ime zaposlenog</label>
+            <select class="form-control" [(ngModel)]="selected_employee">
+                <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.username}}</option>
+            </select>
+        </div>
+        <div *ngIf="selected_subject != undefined && transferSubjectToEmployee">
+            <table class="table">
+                <thead>
+                    <th scope="col">Identifikacioni broj</th>
+                    <th scope="col">Opis</th>
+                    <th scope="col">Kljucne rijeci</th>
+                    <th scope="col">Podnosilac predmeta</th>
+                    <th scope="col">Kategorija</th>
+                    <th scope="col">Odsjek</th>
+                    <th scope="col">Zaduzeni zaposleni</th>
+                    <th scope="col">Dokumenti</th>
+                    <th scope="col">Datum</th>
+                </thead>
+                <tbody>
+                    <td> {{selected_subject.id_number}}</td>
+                    <td> {{selected_subject.description}}</td>
+                    <td> {{selected_subject.keywords}}</td>
+                    <td> {{selected_subject.submitter}}</td>
+                    <td> {{selected_subject.category}}</td>
+                    <td> {{selected_subject.department}}</td>
+                    <td> {{selected_subject.employees}}</td>
+                    <td> {{selected_subject.documents}}</td>
+                    <td> {{selected_subject.submission_date}}</td>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-1"><button class="btn btn-primary" (click)="transferSubject()">Proslijedite predmet</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="!subjects || subjects?.length == 0 && showEmployeeSubjects">
+    Niste zaduzeni ni za jedan predmet
+</div>
