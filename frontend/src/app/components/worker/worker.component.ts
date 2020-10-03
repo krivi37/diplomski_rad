@@ -208,5 +208,13 @@ export class WorkerComponent implements OnInit {
   toggleSearchDocumentsVisible() {
     this.searchDocumentsVisible = !this.searchDocumentsVisible;
   }
+  
+  clearDocumentDate(){
+    this.document_submission_date = undefined;
+  }
+
+  clearSubjectDate(){
+    this.submission_date = undefined;
+  }
 
 }

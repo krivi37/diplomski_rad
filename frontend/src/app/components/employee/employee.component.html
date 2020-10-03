@@ -1,20 +1,20 @@
 <div *ngIf="subjects || subjects?.length > 0">
     <div class="mt-1" *ngIf="!showEmployeeSubjects"><button class="btn btn-primary"
-            (click)="toggleShowEmployeeSubjects()">Pregledajte Vase predmete</button>
+            (click)="toggleShowEmployeeSubjects()">Pregledaj svoje predmete</button>
     </div>
     <div class="mt-1" *ngIf="showEmployeeSubjects"><button class="btn btn-primary"
-            (click)="toggleShowEmployeeSubjects()">Sakrijte pregled</button></div>
+            (click)="toggleShowEmployeeSubjects()">Sakrij pregled</button></div>
     <div *ngIf="subjects?.length > 0 && showEmployeeSubjects">
         <table class="table">
             <thead>
                 <th scope="col">Naziv</th>
                 <th scope="col">Identifikacioni broj</th>
                 <th scope="col">Opis</th>
-                <th scope="col">Kljucne rijeci</th>
+                <th scope="col">Ključne riječi</th>
                 <th scope="col">Podnosilac predmeta</th>
                 <th scope="col">Kategorija</th>
                 <th scope="col">Odsjek</th>
-                <th scope="col">Zaduzeni zaposleni</th>
+                <th scope="col">Zaduženi zaposleni</th>
                 <th scope="col">Dokumenti</th>
                 <th scope="col">Datum</th>
             </thead>
@@ -36,10 +36,10 @@
     </div>
 
     <div class="mt-1" *ngIf="!showEmployeeDocuments"><button class="btn btn-info"
-            (click)="toggleShowEmployeeDocuments()">Pregledajte Vase dokumente</button>
+            (click)="toggleShowEmployeeDocuments()">Pregledaj svoje dokumente</button>
     </div>
     <div class="mt-1" *ngIf="showEmployeeDocuments"><button class="btn btn-info"
-            (click)="toggleShowEmployeeDocuments()">Sakrijte pregled</button></div>
+            (click)="toggleShowEmployeeDocuments()">Sakrij pregled</button></div>
     <div class="mt-1" *ngIf="subjects?.length > 0 && showEmployeeDocuments">
         <table class="table">
             <thead>
@@ -63,9 +63,9 @@
 
 
     <div class="mt-1" *ngIf="!transferSubjectToEmployee"><button class="btn btn-secondary"
-            (click)="toggleTransferSubjectToEmployee()">Proslijedjivanje predmeta</button></div>
+            (click)="toggleTransferSubjectToEmployee()">Proslijeđivanje predmeta</button></div>
     <div class="mt-1" *ngIf="transferSubjectToEmployee"><button class="btn btn-secondary"
-            (click)="toggleTransferSubjectToEmployee()">Sakrijte</button></div>
+            (click)="toggleTransferSubjectToEmployee()">Sakrij</button></div>
     <div class="mt-1" *ngIf="transferSubjectToEmployee">
         <div class="form-group">
             <label>Naziv predmeta</label>
@@ -74,7 +74,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Korisnicko ime zaposlenog</label>
+            <label>Korisničko ime zaposlenog</label>
             <select class="form-control" [(ngModel)]="selected_employee">
                 <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.username}}</option>
             </select>
@@ -84,11 +84,11 @@
                 <thead>
                     <th scope="col">Identifikacioni broj</th>
                     <th scope="col">Opis</th>
-                    <th scope="col">Kljucne rijeci</th>
+                    <th scope="col">Ključne riječi</th>
                     <th scope="col">Podnosilac predmeta</th>
                     <th scope="col">Kategorija</th>
                     <th scope="col">Odsjek</th>
-                    <th scope="col">Zaduzeni zaposleni</th>
+                    <th scope="col">Zaduženi zaposleni</th>
                     <th scope="col">Dokumenti</th>
                     <th scope="col">Datum</th>
                 </thead>
@@ -105,10 +105,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-1"><button class="btn btn-primary" (click)="transferSubject()">Proslijedite predmet</button>
+        <div class="mt-1"><button class="btn btn-primary" (click)="transferSubject()">Proslijedi predmet</button>
         </div>
     </div>
 </div>
 <div *ngIf="!subjects || subjects?.length == 0 && showEmployeeSubjects">
-    Niste zaduzeni ni za jedan predmet
+    Nema predmeta na kojima ste zaduženi
 </div>

@@ -65,7 +65,7 @@ export class DocumentComponent implements OnInit {
     let subject_names = this.subjects.map(a => a.title);
     let difference = document_subjects_array.filter(x => !subject_names.includes(x));
     if (difference.length != 0) {
-      this.flashMessage.show(`Nepostojeci predmeti: ${difference}, morate kreirate predmete prvo`, { cssClass: 'alert-danger', timeout: 2000 });
+      this.flashMessage.show(`Nepostojeći predmeti: ${difference}, morate kreirate predmete prvo`, { cssClass: 'alert-danger', timeout: 2000 });
       return false;
     }
     else {
@@ -80,7 +80,7 @@ export class DocumentComponent implements OnInit {
           this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 2000 });
         }
         else {
-          this.flashMessage.show("Uspjesno dodat novi dokument!", { cssClass: 'alert-success', timeout: 2000 });
+          this.flashMessage.show("Uspješno dodat novi dokument!", { cssClass: 'alert-success', timeout: 2000 });
           this.documentService.getUnarchivedDocuments({}).subscribe((data: any) => {
             if (!data.success) {
               this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 2000 });
@@ -114,7 +114,7 @@ export class DocumentComponent implements OnInit {
       let subject_names = this.subjects.map(a => a.title);
       difference = document_subjects_array.filter(x => !subject_names.includes(x));
       if (difference.length != 0) {
-        this.flashMessage.show(`Nepostojeci predmeti: ${difference}, morate kreirate predmete prvo`, { cssClass: 'alert-danger', timeout: 2000 });
+        this.flashMessage.show(`Nepostojeći predmeti: ${difference}, morate kreirate predmete prvo`, { cssClass: 'alert-danger', timeout: 2000 });
         return false;
       }
     }
@@ -143,7 +143,8 @@ export class DocumentComponent implements OnInit {
               this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 2000 });
             }
             else {
-              this.flashMessage.show("Uspjesno azuriran dokument!", { cssClass: 'alert-success', timeout: 2000 });
+              this.flashMessage.show("Uspješno azuriran dokument!", { cssClass: 'alert-success', timeout: 2000 });
+              this.toggleModifyDocumentVisible();
             }
           });
         }
@@ -161,7 +162,7 @@ export class DocumentComponent implements OnInit {
           this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 2000 });
         }
         else {
-          this.flashMessage.show("Uspjesno azuriran dokument!", { cssClass: 'alert-success', timeout: 2000 });
+          this.flashMessage.show("Uspješno azuriran dokument!", { cssClass: 'alert-success', timeout: 2000 });
           this.toggleModifyDocumentVisible();
         }
       });

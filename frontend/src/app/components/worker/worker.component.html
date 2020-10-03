@@ -1,4 +1,4 @@
-<div class="mt-1" *ngIf="!searchSubjectsVisible"><button class="btn btn-primary" (click)="toggleSearchSubjects()">Pretrazi predmete</button></div>
+<div class="mt-1" *ngIf="!searchSubjectsVisible"><button class="btn btn-primary" (click)="toggleSearchSubjects()">Pretraži predmete</button></div>
 <div class="mt-1" *ngIf="searchSubjectsVisible">
     <button class="btn btn-primary" (click)="toggleSearchSubjects()">Sakrij pretragu predmeta</button>
     <button class="btn btn-info ml-1" (click)="getAllSubjects()">Dohvati sve predmete</button>
@@ -12,6 +12,7 @@
         <div class="form-group">
             <label>Datum</label>
             <input type="datetime-local" [(ngModel)]="submission_date" name="submission_date" class="form-control">
+            <button type = "button" class="btn btn-info mt-1" (click)="clearSubjectDate()">Resetuj datum</button>
         </div>
         <div class="form-group">
             <label>Naslov</label>
@@ -22,7 +23,7 @@
             <input type="text" [(ngModel)]="description" name="description" class="form-control">
         </div>
         <div class="form-group">
-            <label>Kljucne rijeci</label>
+            <label>Ključne riječi</label>
             <input type="text" [(ngModel)]="keywords" name="keywords" class="form-control">
         </div>
         <div class="form-group">
@@ -42,13 +43,13 @@
             <input type="text" [(ngModel)]="department" name="department" class="form-control">
         </div>
         <div class="form-group">
-            <label>Sadrzi dokumente</label>
+            <label>Sadrži dokumente</label>
             <input type="text" [(ngModel)]="document_names" name="document_names" class="form-control">
         </div>
         <input type="submit" class="btn btn-primary" value="Pretrazi">
     </form>
 </div>
-<div class="mt-1" *ngIf="(subjects?.length > 0) && !resultSubjectsVisible"><button class="btn btn-primary" (click)="toggleResultSubjectsVisible()">Prikazi rezultate pretrage predmeta</button></div>
+<div class="mt-1" *ngIf="(subjects?.length > 0) && !resultSubjectsVisible"><button class="btn btn-primary" (click)="toggleResultSubjectsVisible()">Prikaži rezultate pretrage predmeta</button></div>
 <div class="mt-1" *ngIf="resultSubjectsVisible"><button class="btn btn-primary" (click)="toggleResultSubjectsVisible()">Sakrij rezultate pretrage predmeta</button></div>
 <div class="mt-1" *ngIf="subjects?.length > 0 && resultSubjectsVisible">
     <table class="table">
@@ -57,10 +58,10 @@
             <th scope="col">Datum</th>
             <th scope="col">Naslov</th>
             <th scope="col">Opis</th>
-            <th scope="col">Kljucne rijeci</th>
+            <th scope="col">Ključne riječi</th>
             <th scope="col">Kategorija</th>
             <th scope="col">Podnosilac</th>
-            <th scope="col">Zaduzeni zaposleni</th>
+            <th scope="col">Zaduženi zaposleni</th>
             <th scope="col">Odsjek</th>
             <th scope="col">Dokumenti</th>
         </thead>
@@ -81,7 +82,7 @@
     </table>
 </div>
 
-<div class="mt-1" *ngIf="!searchDocumentsVisible"><button class="btn btn-secondary" (click)="toggleSearchDocumentsVisible()">Pretrazi dokumente</button></div>
+<div class="mt-1" *ngIf="!searchDocumentsVisible"><button class="btn btn-secondary" (click)="toggleSearchDocumentsVisible()">Pretraži dokumente</button></div>
 <div class="mt-1" *ngIf="searchDocumentsVisible">
     <button class="btn btn-secondary" (click)="toggleSearchDocumentsVisible()">Sakrij pretragu dokumenata</button>
     <button class="btn btn-info ml-1" (click)="getAllDocuments()">Dohvati sve dokumente</button>
@@ -91,6 +92,7 @@
         <div class="form-group">
             <label>Datum</label>
             <input type="datetime-local" [(ngModel)]="document_submission_date" name="document_submission_date" class="form-control">
+            <button type = "button" class="btn btn-info mt-1" (click)="clearDocumentDate()">Resetuj datum</button>
         </div>
         <div class="form-group">
             <label>Naslov</label>
@@ -111,11 +113,11 @@
         <input type="submit" class="btn btn-primary" value="Pretrazi">
     </form>
 </div>
-<div class="mt-1" *ngIf="(documents?.length > 0) && (!resultDocumentsVisible)"><button class="btn btn-secondary" (click)="toggleResultDocumentsVisible()">Prikazi rezultate pretrage dokumenata</button></div>
+<div class="mt-1" *ngIf="(documents?.length > 0) && (!resultDocumentsVisible)"><button class="btn btn-secondary" (click)="toggleResultDocumentsVisible()">Prikaži rezultate pretrage dokumenata</button></div>
 <div class="mt-1" *ngIf="resultDocumentsVisible"><button class="btn btn-secondary" (click)="toggleResultDocumentsVisible()">Sakrij rezultate pretrage dokumenata</button></div>
 <div class="form-check mt-1" *ngIf="(documents?.length > 0) && resultDocumentsVisible">
     <input type="checkbox" [(ngModel)]="showArchived" name="showArchived" class="form-check-input" id="showArchived">
-    <label class="form-check-label" for="showArchived">Prikazi i arhivirane</label>
+    <label class="form-check-label" for="showArchived">Prikaži i arhivirane</label>
 </div>
 <div class="mt-1" *ngIf="documents?.length > 0 && resultDocumentsVisible">
     <table class="table">

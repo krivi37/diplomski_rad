@@ -75,7 +75,7 @@ export class SubjectComponent implements OnInit {
     let employee_names = this.employees.map(a => a.username);
     let difference = employee_array.filter(x => !employee_names.includes(x));
     if (difference.length != 0) {
-      this.flashMessage.show(`Nepostojeci zaposleni: ${difference}`, { cssClass: 'alert-danger', timeout: 3000 });
+      this.flashMessage.show(`Nepostojeći zaposleni: ${difference}`, { cssClass: 'alert-danger', timeout: 3000 });
       return false;
     }
     let keywords_array = this.keywords.split(/[ ,]+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
@@ -96,7 +96,7 @@ export class SubjectComponent implements OnInit {
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
       }
       else {
-        this.flashMessage.show("Uspjesno zaveden novi predmet", { cssClass: 'alert-success', timeout: 3000 });
+        this.flashMessage.show("Uspješno zaveden novi predmet", { cssClass: 'alert-success', timeout: 3000 });
       }
     });
   }
@@ -125,7 +125,7 @@ export class SubjectComponent implements OnInit {
       let subject_employees = this.employees.map(a => a.username);
       difference = employee_array.filter(x => !subject_employees.includes(x));
       if (difference.length != 0) {
-        this.flashMessage.show(`Nepostojeci zaposleni: ${difference}`, { cssClass: 'alert-danger', timeout: 3000 });
+        this.flashMessage.show(`Nepostojeći zaposleni: ${difference}`, { cssClass: 'alert-danger', timeout: 3000 });
         return false;
       }
     }
@@ -134,7 +134,7 @@ export class SubjectComponent implements OnInit {
       let existing_documents = this.documents.map(a => a.title);
       difference = documents_array.filter(x => !existing_documents.includes(x));
       if (difference.length != 0) {
-        this.flashMessage.show(`Nepostojeci dokumenti: ${difference}`, { cssClass: 'alert-danger', timeout: 3000 });
+        this.flashMessage.show(`Nepostojeći dokumenti: ${difference}`, { cssClass: 'alert-danger', timeout: 3000 });
         return false;
       }
     }
@@ -154,7 +154,7 @@ export class SubjectComponent implements OnInit {
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
       }
       else {
-        this.flashMessage.show("Uspjesno azuriran dokument", { cssClass: 'alert-success', timeout: 3000 });
+        this.flashMessage.show("Uspješno ažuriran dokument", { cssClass: 'alert-success', timeout: 3000 });
       }
     });
 

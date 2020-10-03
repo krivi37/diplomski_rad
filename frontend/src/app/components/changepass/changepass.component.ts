@@ -17,20 +17,21 @@ export class ChangepassComponent implements OnInit {
   oldPassword: string;
   finished: boolean;
   userType: string;
+  username: string;
 
   constructor(private authService: AuthService, private router: Router, private flashMessage: FlashMessagesService) { }
 
   ngOnInit(): void {
     this.forgotten = this.authService.questioncheck;
     this.changingPass = this.authService.loggedIn();
+    if (this.changingPass) this.username = JSON.parse(localStorage.getItem('user')).username;
+    else this.username = this.authService.forgottenusername;
     if (this.changingPass) this.userType = this.authService.getUserType();
   }
 
   checkOldPassword() {
     if (this.changingPass) {
-      let user = localStorage.getItem('user');
-      let username = JSON.parse(user).username;
-      this.authService.checkOldPassword(username, this.oldPassword).subscribe((data: any) => {
+      this.authService.checkOldPassword(this.username, this.oldPassword).subscribe((data: any) => {
         if (!data.success) {
           this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
         }
@@ -48,12 +49,12 @@ export class ChangepassComponent implements OnInit {
         return false;
       }
       else {
-        this.authService.changePassword(this.authService.forgottenusername, this.newPassword).subscribe((data: any) => {
+        this.authService.changePassword(this.username, this.newPassword).subscribe((data: any) => {
           if (!data.success) {
             this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
           }
           else {
-            this.flashMessage.show("Lozinka uspjesno promijenjena", { cssClass: 'alert-success', timeout: 3000 });
+            this.flashMessage.show("Lozinka uspješno promijenjena", { cssClass: 'alert-success', timeout: 3000 });
             this.finished = true;
           }
         });

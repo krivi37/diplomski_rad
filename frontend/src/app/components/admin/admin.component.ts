@@ -57,7 +57,7 @@ export class AdminComponent implements OnInit {
             return false;
           }
           else {
-            this.flashMessage.show("Uspjesno izbrisan korisnik", { cssClass: 'alert-success', timeout: 4000 });
+            this.flashMessage.show("Uspješno izbrisan korisnik", { cssClass: 'alert-success', timeout: 4000 });
             this.users = data.users;
           }
         });
@@ -101,7 +101,7 @@ export class AdminComponent implements OnInit {
             return false;
           }
           else {
-            this.flashMessage.show("Uspjesno dodat novi korisnik", { cssClass: 'alert-success', timeout: 4000 });
+            this.flashMessage.show("Uspješno dodat novi korisnik", { cssClass: 'alert-success', timeout: 4000 });
             this.users = data.users;
           }
         });

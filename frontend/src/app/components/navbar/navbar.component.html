@@ -6,7 +6,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li *ngIf = "!authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
-          <a class="nav-link" [routerLink]="['/']">Pocetna stranica</a>
+          <a class="nav-link" [routerLink]="['/']">Početna stranica</a>
         </li>
         <li *ngIf = "authService.getUserType() == 'admin' && authService.loggedIn()" [routerLinkActive] = "['active']" [routerLinkActiveOptions] = "{exact: true}">
             <a class="nav-link" [routerLink]="['admin']">Baza korisnika</a>

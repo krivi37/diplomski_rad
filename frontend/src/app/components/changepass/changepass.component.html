@@ -25,8 +25,8 @@
     <input type="submit" class="btn btn-primary" value="Promijeni lozinku">
 </form>
 <div *ngIf ="finished">
-    <a *ngIf = "forgotten" class="btn btn-primary" [routerLink]="['../home']">Nazad na pocetnu</a>
-    <a *ngIf = "userType == 'admin'" class="btn btn-primary" [routerLink]="['../admin']">Nazad na Vasu stranicu</a>
-    <a *ngIf = "userType == 'worker'" class="btn btn-primary" [routerLink]="['../worker']">Nazad na Vasu stranicu</a>
-    <a *ngIf = "userType == 'employee'" class="btn btn-primary" [routerLink]="['../employee']">Nazad na Vasu stranicu</a>
+    <a *ngIf = "forgotten" class="btn btn-primary" [routerLink]="['../home']">Nazad na početnu</a>
+    <a *ngIf = "userType == 'admin'" class="btn btn-primary" [routerLink]="['../admin']">Nazad na Vašu stranicu</a>
+    <a *ngIf = "userType == 'worker'" class="btn btn-primary" [routerLink]="['../worker']">Nazad na Vašu stranicu</a>
+    <a *ngIf = "userType == 'employee'" class="btn btn-primary" [routerLink]="['../employee']">Nazad na Vašu stranicu</a>
 </div>

@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { ChangepassComponent } from './components/changepass/changepass.component';
-import { ResetpassComponent } from './components/resetpass/resetpass.component';
 import { SecretquestionComponent } from './components/secretquestion/secretquestion.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { EmployeeComponent } from './components/employee/employee.component';
@@ -27,7 +26,6 @@ import { SubjectComponent } from './components/subject/subject.component';
     AppComponent,
     HomeComponent,
     ChangepassComponent,
-    ResetpassComponent,
     SecretquestionComponent,
     AdminComponent,
     EmployeeComponent,

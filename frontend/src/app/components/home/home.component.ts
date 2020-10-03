@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   Login(): void {
     if(this.username == undefined || this.username == ""){
-      this.flashMessage.show("Morate unijeti korisnicko ime!", {cssClass: 'alert-danger', timeout: 4000});
+      this.flashMessage.show("Morate unijeti korisničko ime!", {cssClass: 'alert-danger', timeout: 4000});
     }
     else if ((this.password == undefined || this.password =="")){
       this.flashMessage.show("Morate unijeti lozinku!", {cssClass: 'alert-danger', timeout: 4000});

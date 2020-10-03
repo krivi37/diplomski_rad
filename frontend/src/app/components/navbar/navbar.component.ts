@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
 
   onLogoutClick(){
     this.authService.logout();
-    this.flashMessage.show('Uspjesno ste se izlogovali', {cssClass: 'alert-success', timeout: 3000});
+    this.flashMessage.show('Uspješno ste se izlogovali', {cssClass: 'alert-success', timeout: 3000});
     this.router.navigate(['/']);
     return false;
 }
