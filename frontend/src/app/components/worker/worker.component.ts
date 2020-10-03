@@ -37,6 +37,8 @@ export class WorkerComponent implements OnInit {
   document_tags: string;
   document_archived: boolean;
 
+  showArchived: boolean;
+
 
   constructor(private subjectService: SubjectService, private router: Router, private documentService: DocumentService) { }
 
@@ -46,6 +48,31 @@ export class WorkerComponent implements OnInit {
     this.document_archived = false;
     this.searchDocumentsVisible = false;
     this.resultDocumentsVisible = false;
+    this.showArchived = false;
+  }
+
+  getAllDocuments(){
+    this.searchDocumentsVisible = false;
+    this.documentService.getAllDocuments({}).subscribe((data: any) => {
+      if (!data.success) {
+
+      }
+      else {
+        this.documents = data.documents;
+      }
+    });
+  }
+
+  getAllSubjects(){
+    this.searchSubjectsVisible = false;
+    this.subjectService.getSubjects({}).subscribe((data: any) => {
+      if (!data.success) {
+
+      }
+      else {
+        this.subjects = data.subject;
+      }
+    });
   }
 
   searchSubjects() {
@@ -92,6 +119,7 @@ export class WorkerComponent implements OnInit {
 
       }
       else {
+        this.searchSubjectsVisible = false;
         this.subjects = data.subject;
       }
     });
@@ -112,11 +140,11 @@ export class WorkerComponent implements OnInit {
       document_subjects_array = document_subjects_array.map(x => x.replace(/\"/g, ""));
     }
     let document = {
-      document_title: this.document_title,
-      document_submission_date: this.document_submission_date,
-      document_subjects: document_subjects_array ? document_subjects_array : undefined,
-      document_description: this.document_description,
-      document_tags: document_tags_array ? document_tags_array : undefined,
+      title: this.document_title,
+      submission_date: this.document_submission_date,
+      subjects: document_subjects_array ? document_subjects_array : undefined,
+      description: this.document_description,
+      tags: document_tags_array ? document_tags_array : undefined,
     }
 
     let document2 = Object.keys(document).reduce((result, key) => {
@@ -127,6 +155,7 @@ export class WorkerComponent implements OnInit {
       return result;
     }, {});
 
+    /* If we don't want to always drag all documents from server, we can call different functions for getting unarchived and all documents
     if (this.document_archived) {
       this.documentService.getAllDocuments(document2).subscribe((data: any) => {
         if (!data.success) {
@@ -146,7 +175,18 @@ export class WorkerComponent implements OnInit {
           this.documents = data.documents;
         }
       });
-    }
+    }*/
+
+    // Drag all documents from server, and then toggle display for archived
+    this.documentService.getAllDocuments(document2).subscribe((data: any) => {
+      if (!data.success) {
+
+      }
+      else {
+        this.searchDocumentsVisible = false;
+        this.documents = data.documents;
+      }
+    });
 
   }
 

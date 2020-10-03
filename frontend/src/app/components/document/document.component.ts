@@ -81,6 +81,14 @@ export class DocumentComponent implements OnInit {
         }
         else {
           this.flashMessage.show("Uspjesno dodat novi dokument!", { cssClass: 'alert-success', timeout: 2000 });
+          this.documentService.getUnarchivedDocuments({}).subscribe((data: any) => {
+            if (!data.success) {
+              this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 2000 });
+            }
+            else {
+              this.documents = data.documents;
+            }
+          });
           this.toggleAddDocumentVisible();
         }
       });
