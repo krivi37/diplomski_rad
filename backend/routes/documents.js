@@ -131,7 +131,7 @@ router.post('/updatedocuments',  passport.authenticate(['worker-rule', 'employee
 
 
 router.post('/deletedocument',  passport.authenticate('worker-rule', {session: false}), (req, res, next) => {
-    Doc.DeleteDocument(req.body.title, req.body.subjects, (err, data) => {
+    Doc.DeleteDocument(req.body.title, req.body.subjects, req.body.archived, (err, data) => {
         if(err) {
             res.json({success: false, msg: "Failed"});
         }

@@ -258,6 +258,14 @@ export class WorkerComponent implements OnInit {
             this.documents = data.documents;
           }
         });
+        this.subjectService.getSubjects({}).subscribe((data: any) => {
+          if(!data.success){
+
+          }
+          else {
+            this.subjects = data.subject;
+          }
+        });
       }
     });
   }

@@ -165,17 +165,22 @@ module.exports.updateDocuments = function (keys, params, callback) {
 
 };
 
-module.exports.DeleteDocument = function (title, subjects, callback) {
-  Subject.RemoveDocument(subjects, title, (err, data) => {
-    if (err) throw err;
-    else {
-      Doc.deleteOne({ title: title, subjects: { $all: subjects } }, callback);
-    }
-  });
+module.exports.DeleteDocument = function (title, subjects, archived, callback) {
+  if (!archived) {
+    Subject.RemoveDocument(subjects, title, (err, data) => {
+      if (err) throw err;
+      else {
+        Doc.deleteOne({ title: title, subjects: { $all: subjects }, archived: false }, callback);
+      }
+    });
+  }
+  else{
+    Doc.deleteOne({ title: title, subjects: { $all: subjects }, archived: true }, callback);
+  }
 }
 
 module.exports.SubjectRemoved = function (subject, callback) {
-  Doc.deleteMany({subjects: { $size: 1 },  subjects: subject}, (err, data) => {
+  Doc.deleteMany({ subjects: { $size: 1 }, subjects: subject }, (err, data) => {
     if (err) throw err;
     else {
       Doc.updateMany({ subjects: subject }, { $pull: { subjects: { $all: subject } } }, callback);
