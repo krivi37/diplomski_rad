@@ -23,7 +23,7 @@
             <input type="text" [(ngModel)]="description" name="description" class="form-control">
         </div>
         <div class="form-group">
-            <label>Ključne riječi</label>
+            <label>Ključne riječi (koristiti dvostruke navodnike za riječi sa razmakom)</label>
             <input type="text" [(ngModel)]="keywords" name="keywords" class="form-control">
         </div>
         <div class="form-group">
@@ -35,7 +35,7 @@
             <input type="text" [(ngModel)]="submitter" name="submitter" class="form-control">
         </div>
         <div class="form-group">
-            <label>Zaduzeni zaposleni</label>
+            <label>Zaduzeni zaposleni (korisnička imena)</label>
             <input type="text" [(ngModel)]="employees" name="employees" class="form-control">
         </div>
         <div class="form-group">
@@ -43,7 +43,7 @@
             <input type="text" [(ngModel)]="department" name="department" class="form-control">
         </div>
         <div class="form-group">
-            <label>Sadrži dokumente</label>
+            <label>Sadrži dokumente (koristiti dvostruke navodnike za nazive dokumenata koji imaju razmak u imenu)</label>
             <input type="text" [(ngModel)]="document_names" name="document_names" class="form-control">
         </div>
         <input type="submit" class="btn btn-primary" value="Pretrazi">
@@ -64,6 +64,7 @@
             <th scope="col">Zaduženi zaposleni</th>
             <th scope="col">Odsjek</th>
             <th scope="col">Dokumenti</th>
+            <th scope="col"></th>
         </thead>
         <tbody>
             <tr *ngFor="let stavka of subjects">
@@ -77,6 +78,9 @@
                 <td>{{stavka.employees}}</td>
                 <td>{{stavka.department}}</td>
                 <td>{{stavka.documents}}</td>
+                <div>
+                    <button class="btn btn-secondary" (click)="deleteSubject(stavka)">Obriši</button>
+                </div>
             </tr>
         </tbody>
     </table>
@@ -103,11 +107,11 @@
             <input type="text" [(ngModel)]="document_description" name="document_description" class="form-control">
         </div>
         <div class="form-group">
-            <label>Tagovi</label>
+            <label>Tagovi (koristiti dvostruke navodnike za tagove koji imaju razmak u imenu)</label>
             <input type="text" [(ngModel)]="document_tags" name="document_tags" class="form-control">
         </div>
         <div class="form-group">
-            <label>Predmeti kojima pripada</label>
+            <label>Predmeti kojima pripada (koristiti dvostruke navodnike za imena predmeta koji imaju razmak u imenu)</label>
             <input type="text" [(ngModel)]="document_subjects" name="document_subjects" class="form-control">
         </div>
         <input type="submit" class="btn btn-primary" value="Pretrazi">
@@ -128,6 +132,7 @@
             <th scope="col">Tagovi</th>
             <th scope="col">Predmeti kojima pripada</th>
             <th scope="col">Arhiviran</th>
+            <th scope="col"></th>
         </thead>
         <tbody>
             <tr *ngFor="let stavka of documents">
@@ -140,6 +145,9 @@
                 <div *ngIf = "stavka.archived && showArchived"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
                   </svg></div></td>
+                <div>
+                    <button class="btn btn-secondary" (click)="deleteDocument(stavka)">Obriši</button>
+                </div>
             </tr>
         </tbody>
     </table>

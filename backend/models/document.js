@@ -175,7 +175,7 @@ module.exports.DeleteDocument = function (title, subjects, callback) {
 }
 
 module.exports.SubjectRemoved = function (subject, callback) {
-  Doc.deleteMany({ subjects: subject, subjects: { $size: 1 } }, (err, data) => {
+  Doc.deleteMany({subjects: { $size: 1 },  subjects: subject}, (err, data) => {
     if (err) throw err;
     else {
       Doc.updateMany({ subjects: subject }, { $pull: { subjects: { $all: subject } } }, callback);

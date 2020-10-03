@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FlashMessagesService } from 'angular2-flash-messages';
 import { DocumentService } from 'src/app/services/document.service';
 import { SubjectService } from 'src/app/services/subject.service';
 
@@ -40,7 +41,7 @@ export class WorkerComponent implements OnInit {
   showArchived: boolean;
 
 
-  constructor(private subjectService: SubjectService, private router: Router, private documentService: DocumentService) { }
+  constructor(private subjectService: SubjectService, private router: Router, private documentService: DocumentService, private flashMessage: FlashMessagesService) { }
 
   ngOnInit(): void {
     this.searchSubjectsVisible = false;
@@ -55,7 +56,7 @@ export class WorkerComponent implements OnInit {
     this.searchDocumentsVisible = false;
     this.documentService.getAllDocuments({}).subscribe((data: any) => {
       if (!data.success) {
-
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 1500});
       }
       else {
         this.documents = data.documents;
@@ -67,7 +68,7 @@ export class WorkerComponent implements OnInit {
     this.searchSubjectsVisible = false;
     this.subjectService.getSubjects({}).subscribe((data: any) => {
       if (!data.success) {
-
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 1500});
       }
       else {
         this.subjects = data.subject;
@@ -116,7 +117,7 @@ export class WorkerComponent implements OnInit {
 
     this.subjectService.getSubjects(subject2).subscribe((data: any) => {
       if (!data.success) {
-
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 1500});
       }
       else {
         this.searchSubjectsVisible = false;
@@ -180,7 +181,7 @@ export class WorkerComponent implements OnInit {
     // Drag all documents from server, and then toggle display for archived
     this.documentService.getAllDocuments(document2).subscribe((data: any) => {
       if (!data.success) {
-
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 1500});
       }
       else {
         this.searchDocumentsVisible = false;
@@ -215,6 +216,50 @@ export class WorkerComponent implements OnInit {
 
   clearSubjectDate(){
     this.submission_date = undefined;
+  }
+
+  deleteSubject(subject: any){
+    this.subjectService.deleteSubject(subject).subscribe((data: any)=>{
+      if (!data.success) {
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 1500});
+      }
+      else {
+        this.subjectService.getSubjects({}).subscribe((data: any) => {
+          if(!data.success){
+
+          }
+          else {
+            this.subjects = data.subject;
+          }
+        });
+        this.documentService.getAllDocuments({}).subscribe((data: any) => {
+          if(!data.success){
+
+          }
+          else {
+            this.documents = data.documents;
+          }
+        });
+      }
+    });
+  }
+
+  deleteDocument(document: any){
+    this.documentService.deleteDocument(document).subscribe((data: any)=>{
+      if (!data.success) {  
+        this.flashMessage.show(data.msg, {cssClass: 'alert-danger', timeout: 1500});
+      }
+      else {
+        this.documentService.getAllDocuments({}).subscribe((data: any) => {
+          if(!data.success){
+
+          }
+          else {
+            this.documents = data.documents;
+          }
+        });
+      }
+    });
   }
 
 }

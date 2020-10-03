@@ -43,4 +43,12 @@ export class DocumentService {
     return this.http.post('http://localhost:3000/documents/updatedocuments', {keys: document, params: document}, { headers: headers });
   }
 
+  deleteDocument(document): Observable<any>{
+    this.authToken = localStorage.getItem('id_token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', this.authToken);
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/documents/deletedocument', document, { headers: headers });
+  }
+
 }

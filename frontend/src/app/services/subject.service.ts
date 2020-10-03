@@ -44,4 +44,12 @@ export class SubjectService {
     return this.http.post('http://localhost:3000/subjects/updatesubjects', {keys: old_subject, params: new_subject}, { headers: headers });
   }
 
+  deleteSubject(subject): Observable<any>{
+    this.authToken = localStorage.getItem('id_token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', this.authToken);
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/subjects/deletesubject', subject, { headers: headers });
+  }
+
 }

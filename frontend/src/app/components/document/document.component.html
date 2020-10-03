@@ -8,7 +8,7 @@
         <input type="text" [(ngModel)]="document_title" name="document_title" class="form-control">
     </div>
     <div class="form-group">
-        <label>Predmeti</label>
+        <label>Predmeti (koristiti dvostruke navodnike za predmete koji imaju razmake u imenu)</label>
         <input type="text" [(ngModel)]="document_subjects" name="document_subjects" class="form-control">
     </div>
     <div class="form-group">
@@ -16,7 +16,7 @@
         <input type="text" [(ngModel)]="document_description" name="document_description" class="form-control">
     </div>
     <div class="form-group">
-        <label>Tagovi</label>
+        <label>Tagovi (koristiti dvostruke navodnike za tagove koji imaju razmake u imenu)</label>
         <input type="text" [(ngModel)]="document_tags" name="document_tags" class="form-control">
     </div>
     <input type="submit" class="btn btn-primary" value="Dodaj dokument">
@@ -53,7 +53,7 @@
     </div>
     <form class="mt-1" (submit)="modifyDocument()">
         <div class="form-group">
-            <label>Predmeti</label>
+            <label>Predmeti (koristiti dvostruke navodnike za predmete koji imaju razmake u imenu)</label>
             <input type="text" [(ngModel)]="document_subjects" name="document_subjects" class="form-control">
         </div>
         <div class="form-group">
@@ -61,7 +61,7 @@
             <input type="text" [(ngModel)]="document_description" name="document_description" class="form-control">
         </div>
         <div class="form-group">
-            <label>Tagovi</label>
+            <label>Tagovi (koristiti dvostruke navodnike za tagove koji imaju razmake u imenu)</label>
             <input type="text" [(ngModel)]="document_tags" name="document_tags" class="form-control">
         </div>
         <input type="submit" class="btn btn-primary" value="Izmijeni dokument">
