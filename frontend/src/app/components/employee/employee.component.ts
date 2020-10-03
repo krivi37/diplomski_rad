@@ -41,7 +41,7 @@ export class EmployeeComponent implements OnInit {
         else if(data.subject.length > 0) {
           this.subjects = data.subject;
           let subject_names = this.subjects.map(a => a.title);
-          this.documentService.getUnarchivedDocuments({subjects:subject_names}).subscribe((data: any)=>{
+          this.documentService.getUnarchivedDocuments({subjects:subject_names, forEmployee: true}).subscribe((data: any)=>{
             if (!data.success) {
               this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
             }
@@ -97,7 +97,7 @@ export class EmployeeComponent implements OnInit {
             else if (data.subject.length > 0) {
               this.subjects = data.subject;
               let subject_names = this.subjects.map(a => a.title);
-              this.documentService.getUnarchivedDocuments({subjects:subject_names}).subscribe((data: any)=>{
+              this.documentService.getUnarchivedDocuments({subjects:subject_names, forEmployee: true}).subscribe((data: any)=>{
                 if (!data.success) {
                   this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
                 }
