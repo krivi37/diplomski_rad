@@ -101,6 +101,7 @@ export class WorkerComponent implements OnInit {
       submission_date: this.submission_date,
       description: this.description,
       submitter: this.submitter,
+      category: this.category,
       department: this.department,
       keywords: keywords_array ? keywords_array : undefined,//ovakav regex dozvoljava koriscenje znaka razmaka unutar navodnika
       documents: documents_array ? documents_array : undefined,
